@@ -15,7 +15,7 @@ For information about the upnpc-rs library, please refer to the [library documen
 ## Installation
 You can install the cli using cargo:
 ```bash
-cargo install upnpc-rs
+cargo install --git https://github.com/Drew-Chase/upnpc-rs
 ```
 or by downloading the latest release from [GitHub Releases](https://github.com/Drew-Chase/upnpc-rs/releases)
 

@@ -3,6 +3,8 @@ name = "upnpc-rs"
 version = "0.1.0"
 edition = "2024"
 description = "A fast, lightweight, and easy to use library for managing your networks upnp"
+authors = ["Drew Chase"]
+readme = "README.md"
 
 [lib]
 name = "upnpc_rs"

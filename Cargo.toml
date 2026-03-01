@@ -6,6 +6,8 @@ name = "upnpc-rs-cli"
 version = "0.1.0"
 edition = "2024"
 description = "A fast, lightweight, and easy to use cli for managing your networks upnp"
+authors = ["Drew Chase"]
+readme = "README.md"
 
 
 [[bin]]

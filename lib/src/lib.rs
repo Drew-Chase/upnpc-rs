@@ -56,7 +56,7 @@ pub struct PortEntry {
 /// * `protocol` - The protocol to forward (`TCP`, `UDP`, or `Both`).
 /// * `external_port` - The external port on the gateway. Defaults to the same as `port`.
 /// * `description` - An optional description for the mapping.
-/// * `lease_duration` - Lease duration in seconds. Use `0` for no expiration.
+/// * `lease_duration` - Lease duration in seconds, if `None` then no expiration.
 ///
 /// # Errors
 ///
@@ -67,7 +67,7 @@ pub fn add_port(
     protocol: Protocol,
     external_port: Option<u16>,
     description: Option<String>,
-    lease_duration: u32,
+    lease_duration: Option<u32>,
 ) -> Result<()> {
     let local_ip = local_ip()?.to_string();
     let gateway = search_gateway(SearchOptions {
@@ -78,6 +78,7 @@ pub fn add_port(
     let ip = SocketAddr::new(ip, port);
     let description = description.unwrap_or_default();
     let external_port = external_port.unwrap_or(port);
+    let lease_duration = lease_duration.unwrap_or(0);
 
     match protocol {
         Protocol::TCP => gateway.add_port(

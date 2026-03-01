@@ -25,7 +25,7 @@ fn main() -> anyhow::Result<()> {
                 },
                 external_port,
                 description,
-                lease_duration,
+                Some(lease_duration),
             )?;
         }
         Actions::Remove { port, protocol } => {

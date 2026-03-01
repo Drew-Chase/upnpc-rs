@@ -27,7 +27,7 @@ fn main() -> anyhow::Result<()> {
         Protocol::TCP,                 // protocol
         None,                          // external port (defaults to local port)
         Some("My server".to_string()), // description
-        3600,                          // lease duration in seconds (0 = no expiration)
+        Some(3600),                    // lease duration in seconds (None = no expiration)
     )?;
     Ok(())
 }
@@ -39,7 +39,7 @@ Forward to both TCP and UDP at once:
 use upnpc_rs::{add_port, Protocol};
 
 fn main() -> anyhow::Result<()> {
-    add_port(8080, None, Protocol::Both, None, Some("Game server".to_string()), 0)?;
+    add_port(8080, None, Protocol::Both, None, Some("Game server".to_string()), None)?;
     Ok(())
 }
 ```
@@ -51,7 +51,7 @@ use upnpc_rs::{add_port, Protocol};
 
 fn main() -> anyhow::Result<()> {
     // External port 9090 forwards to local port 8080
-    add_port(8080, None, Protocol::TCP, Some(9090), None, 3600)?;
+    add_port(8080, None, Protocol::TCP, Some(9090), None, Some(3600))?;
     Ok(())
 }
 ```

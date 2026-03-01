@@ -27,6 +27,7 @@ fn main() -> anyhow::Result<()> {
                 description,
                 Some(lease_duration),
             )?;
+            println!("Successfully added port {}", port);
         }
         Actions::Remove { port, protocol } => {
             remove_port(
@@ -37,6 +38,7 @@ fn main() -> anyhow::Result<()> {
                     command_line::Protocol::UDP => upnpc_rs::Protocol::UDP,
                 },
             )?;
+            println!("Successfully removed port {}", port);
         }
         Actions::List { ip, format } => {
             let entires = list_ports()?;

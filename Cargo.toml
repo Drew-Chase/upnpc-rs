@@ -1,0 +1,27 @@
+[workspace]
+members = ["lib"]
+
+[package]
+name = "upnpc-rs-cli"
+version = "0.1.0"
+edition = "2024"
+description = "A fast, lightweight, and easy to use cli for managing your networks upnp"
+
+
+[[bin]]
+name = "upnpc"
+path = "src/main.rs"
+
+[dependencies]
+clap = { version = "4.5.60", features = ["default", "color", "help", "usage", "error-context", "suggestions", "derive", "wrap_help", "suggestions", "string"] }
+serde_json = { version = "1.0.149" }
+serde_yaml = { version = "0.9.33" }
+anyhow = { version = "1.0.102" }
+upnpc-rs = { path = "lib" }
+
+[profile.release]
+opt-level = "z"
+lto = true
+codegen-units = 1
+panic = "abort"
+strip = true

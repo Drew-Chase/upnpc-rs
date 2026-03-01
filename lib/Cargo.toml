@@ -1,0 +1,15 @@
+[package]
+name = "upnpc-rs"
+version = "0.1.0"
+edition = "2024"
+description = "A fast, lightweight, and easy to use cli for managing your networks upnp"
+
+[lib]
+name = "upnpc_rs"
+path = "src/lib.rs"
+
+[dependencies]
+igd-next = { version = "0.16.2" }
+serde = { version = "1.0.228", features = ["derive"] }
+anyhow = { version = "1.0.102" }
+local-ip-address = { version = "0.6.10" }

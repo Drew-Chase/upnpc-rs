@@ -1,3 +1,5 @@
+#![doc = include_str!("../README.md")]
+
 use anyhow::Result;
 use igd_next::{PortMappingProtocol, SearchOptions, search_gateway};
 use local_ip_address::local_ip;
@@ -6,14 +8,20 @@ use std::fmt::Display;
 use std::net::{IpAddr, SocketAddr, SocketAddrV4};
 use std::time::Duration;
 
+/// The network protocol for a port mapping.
 #[derive(Debug, Clone, Serialize)]
 pub enum Protocol {
+    /// Apply the operation to both TCP and UDP.
+    /// Skipped during serialization since it represents a combined action rather than a single protocol.
     #[serde(skip)]
     Both,
+    /// Transmission Control Protocol.
     TCP,
+    /// User Datagram Protocol.
     UDP,
 }
 
+/// A UPnP port mapping entry retrieved from the gateway.
 #[derive(Serialize, Debug, Clone)]
 pub struct PortEntry {
     /// The remote host for which the mapping is valid
@@ -36,6 +44,23 @@ pub struct PortEntry {
     pub lease_duration: u32,
 }
 
+/// Adds a port mapping on the UPnP gateway.
+///
+/// Discovers the local network gateway and requests a port forwarding rule
+/// that maps an external port to the given internal `port`.
+///
+/// # Arguments
+///
+/// * `port` - The internal (local) port to forward traffic to.
+/// * `ip` - The local IP address to forward to. Defaults to the auto-detected local IP.
+/// * `protocol` - The protocol to forward (`TCP`, `UDP`, or `Both`).
+/// * `external_port` - The external port on the gateway. Defaults to the same as `port`.
+/// * `description` - An optional description for the mapping.
+/// * `lease_duration` - Lease duration in seconds. Use `0` for no expiration.
+///
+/// # Errors
+///
+/// Returns an error if gateway discovery fails or the gateway rejects the mapping.
 pub fn add_port(
     port: u16,
     ip: Option<String>,
@@ -89,6 +114,16 @@ pub fn add_port(
 
     Ok(())
 }
+/// Removes a port mapping from the UPnP gateway.
+///
+/// # Arguments
+///
+/// * `port` - The external port of the mapping to remove.
+/// * `protocol` - The protocol of the mapping (`TCP`, `UDP`, or `Both`).
+///
+/// # Errors
+///
+/// Returns an error if gateway discovery fails or the mapping cannot be removed.
 pub fn remove_port(port: u16, protocol: Protocol) -> Result<()> {
     let local_ip = local_ip()?.to_string();
     let gateway = search_gateway(SearchOptions {
@@ -107,6 +142,14 @@ pub fn remove_port(port: u16, protocol: Protocol) -> Result<()> {
 
     Ok(())
 }
+/// Lists all active port mappings on the UPnP gateway.
+///
+/// Iterates through every port mapping entry on the gateway and returns them
+/// as a vector of [`PortEntry`] values.
+///
+/// # Errors
+///
+/// Returns an error if gateway discovery fails or the local IP cannot be determined.
 pub fn list_ports() -> Result<Vec<PortEntry>> {
     let local_ip = local_ip()?.to_string();
     let gateway = search_gateway(SearchOptions {

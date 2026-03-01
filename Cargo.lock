@@ -821,7 +821,7 @@ checksum = "673aac59facbab8a9007c7f6108d11f63b603f7cabff99fabf650fea5c32b861"
 
 [[package]]
 name = "upnpc-rs"
-version = "0.1.0"
+version = "0.1.0-beta"
 dependencies = [
  "anyhow",
  "igd-next",
@@ -831,7 +831,7 @@ dependencies = [
 
 [[package]]
 name = "upnpc-rs-cli"
-version = "0.1.0"
+version = "0.1.0-beta"
 dependencies = [
  "anyhow",
  "clap",

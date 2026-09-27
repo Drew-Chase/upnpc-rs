@@ -45,6 +45,9 @@ Options:
 # Maps the port on the current IP address using TCP and UDP
 upnpc add <port>
 
+# Maps multiple ports at once on the current IP address using TCP and UDP
+upnpc add <port,port,...>
+
 # Maps the port on a specific IP address
 upnpc add --ip <ip> <port>
 
@@ -60,6 +63,9 @@ upnpc add --expiration 60 <port>
 ```bash
 # Remove a mapping by port
 upnpc remove <port>
+
+# Remove mappings for multiple ports at once
+upnpc remove <port,port,...>
 
 # Remove a mapping by port and protocol
 upnpc remove --protocol <tcp|udp|both> <port>

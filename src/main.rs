@@ -11,36 +11,35 @@ fn main() -> anyhow::Result<()> {
     match args.command {
         Actions::Add {
             ip,
-            port,
+            ports,
             protocol,
             description,
             external_port,
             lease_duration,
         } => {
-            add_port(
-                port,
-                ip,
-                match protocol {
-                    command_line::Protocol::Both => upnpc_rs::Protocol::Both,
-                    command_line::Protocol::TCP => upnpc_rs::Protocol::TCP,
-                    command_line::Protocol::UDP => upnpc_rs::Protocol::UDP,
-                },
-                external_port,
-                description,
-                Some(lease_duration),
-            )?;
-            println!("{} {}", "Successfully added port".green(), port.to_string().bold());
+            if ports.len() > 1 && external_port.is_some() {
+                anyhow::bail!("--external-port can only be used with a single port");
+            }
+            let protocol = match protocol {
+                command_line::Protocol::Both => upnpc_rs::Protocol::Both,
+                command_line::Protocol::TCP => upnpc_rs::Protocol::TCP,
+                command_line::Protocol::UDP => upnpc_rs::Protocol::UDP,
+            };
+            for port in ports {
+                add_port(port, ip.clone(), protocol.clone(), external_port, description.clone(), Some(lease_duration))?;
+                println!("{} {}", "Successfully added port".green(), port.to_string().bold());
+            }
         }
-        Actions::Remove { port, protocol } => {
-            remove_port(
-                port,
-                match protocol {
-                    command_line::Protocol::Both => upnpc_rs::Protocol::Both,
-                    command_line::Protocol::TCP => upnpc_rs::Protocol::TCP,
-                    command_line::Protocol::UDP => upnpc_rs::Protocol::UDP,
-                },
-            )?;
-            println!("{} {}", "Successfully removed port".green(), port.to_string().bold());
+        Actions::Remove { ports, protocol } => {
+            let protocol = match protocol {
+                command_line::Protocol::Both => upnpc_rs::Protocol::Both,
+                command_line::Protocol::TCP => upnpc_rs::Protocol::TCP,
+                command_line::Protocol::UDP => upnpc_rs::Protocol::UDP,
+            };
+            for port in ports {
+                remove_port(port, protocol.clone())?;
+                println!("{} {}", "Successfully removed port".green(), port.to_string().bold());
+            }
         }
         Actions::List { ip, format } => {
             let entires = list_ports()?;

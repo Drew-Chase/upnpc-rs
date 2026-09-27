@@ -10,6 +10,9 @@ use clap::{Parser, Subcommand};
         # Maps the port on the current ip address using TCP and UPD
         upnpc add <port>
 
+        # Maps multiple ports at once on the current ip address using TCP and UPD
+        upnpc add <port,port,...>
+
         # Maps the port on the specified ip address using TCP and UPD
         upnpc add --ip <ip> <port>
 
@@ -24,6 +27,9 @@ use clap::{Parser, Subcommand};
 
         # Remove a mapping with a specific port
         upnpc remove <port>
+
+        # Remove mappings for multiple ports at once
+        upnpc remove <port,port,...>
 
         # Remove a mapping with a specific port and protocol
         upnpc remove --protocol <tcp|udp|both> <port>
@@ -51,6 +57,9 @@ pub enum Actions {
         # Maps the port on the current ip address using TCP and UPD
         upnpc add <port>
 
+        # Maps multiple ports at once on the current ip address using TCP and UPD
+        upnpc add <port,port,...>
+
         # Maps the port on the specified ip address using TCP and UPD
         upnpc add --ip <ip> <port>
 
@@ -58,8 +67,9 @@ pub enum Actions {
         upnpc add --ip <ip> --protocol <tcp|udp|both> <port>
 ")]
     Add {
-        /// Internal port (required)
-        port: u16,
+        /// Internal port(s) to forward to, comma-separated (e.g. 1234,5678)
+        #[arg(value_delimiter = ',')]
+        ports: Vec<u16>,
         /// Ip address to forward to (defaults to the local ip
         #[arg(long, short)]
         ip: Option<String>,
@@ -82,11 +92,16 @@ pub enum Actions {
         # Remove a mapping with a specific port
         upnpc remove <port>
 
+        # Remove mappings for multiple ports at once
+        upnpc remove <port,port,...>
+
         # Remove a mapping with a specific port and protocol
         upnpc remove --protocol <tcp|udp|*> <port>
 ")]
     Remove{
-        port: u16,
+        /// Port(s) to remove, comma-separated (e.g. 1234,5678)
+        #[arg(value_delimiter = ',')]
+        ports: Vec<u16>,
         #[clap(long, short, default_value = "both")]
         protocol: Protocol
     },

@@ -19,6 +19,10 @@ cargo install --git https://github.com/Drew-Chase/upnpc-rs
 ```
 or by downloading the latest release from [GitHub Releases](https://github.com/Drew-Chase/upnpc-rs/releases)
 
+> [!note]
+> I'm currently waiting for the AUR account registration to reopen, then I'll get this published there.   
+![img.png](docs/aur-account-closed.png)
+
 ## How to Use
 
 ```
